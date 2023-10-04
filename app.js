@@ -1,3 +1,7 @@
+if(process.env.NODE_ENV !=='production'){
+    require('dotenv').config();
+}
+
 const express = require('express');
 const app = express();
 const path = require('path')
@@ -7,6 +11,7 @@ const ejsMate = require('ejs-mate');
 const methodOverride = require('method-override')
 const flash = require('connect-flash');
 const session = require('express-session');
+const productApi = require('./routes/api/productapi')
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const User = require('./models/User')
@@ -18,7 +23,8 @@ const authRoutes = require('./routes/auth');
 const cartRoutes = require('./routes/cart');
 
 
-mongoose.connect('mongodb://127.0.0.1:27017/shopping-sam-app')
+const dbURL = process.env.dbURL || ('mongodb://127.0.0.1:27017/shopping-sam-app');
+mongoose.connect(dbURL)
 .then(()=>{console.log("DB connected succesfully")})
 .catch((err)=>{
     console.log("DB Error")
@@ -41,6 +47,8 @@ app.engine('ejs',ejsMate);
 app.set('view engine','ejs')
 app.set('views',path.join(__dirname,'views'));
 app.use(express.static(path.join(__dirname,'public')))
+app.use(express.static(path.join(__dirname,'public')))
+
 app.use(express.urlencoded({extended:true}))
 app.use(methodOverride('_method'));
 app.use(session(configSession));
@@ -59,6 +67,11 @@ app.use((req,res,next)=>{
     next();
 })
 
+app.get('/',(req,res)=>{
+    res.render('home');
+})
+
+
 // PASSPORT ki local strategy
 passport.use(new LocalStrategy(User.authenticate()));
 
@@ -70,7 +83,7 @@ app.use(productRoutes);
 app.use(reviewRoutes);
 app.use(authRoutes);
 app.use(cartRoutes);
-
+app.use(productApi);
 
 app.listen(8080,()=>{
     console.log("server connected at port 8080")

@@ -30,7 +30,7 @@ const products = [
         name:"Airpods",
         img:"https://images.unsplash.com/photo-1603351154351-5e2d0600bb77?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YWlycG9kfGVufDB8fDB8fHww&auto=format&fit=crop&w=900&q=60",
         price : 25000,
-        description:"IEM lele "
+        description:"IEM lele"
         
     }
 ]

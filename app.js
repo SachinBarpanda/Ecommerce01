@@ -23,7 +23,7 @@ const authRoutes = require('./routes/auth');
 const cartRoutes = require('./routes/cart');
 
 
-const dbURL = process.env.dbURL || ('mongodb://127.0.0.1:27017/shopping-sam-app');
+const dbURL = process.env.dbURL;
 mongoose.connect(dbURL)
 .then(()=>{console.log("DB connected succesfully")})
 .catch((err)=>{
@@ -77,7 +77,7 @@ passport.use(new LocalStrategy(User.authenticate()));
 
 
 // seeding Database
-// seedDB();
+seedDB();
 
 app.use(productRoutes);
 app.use(reviewRoutes);
